@@ -1,0 +1,32 @@
+{
+  "name": "te2-tweb-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "dev": "NODE_ENV=development nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Etnarion/TE2-TWEB.git"
+  },
+  "author": "Samuel Mayor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Etnarion/TE2-TWEB/issues"
+  },
+  "homepage": "https://github.com/Etnarion/TE2-TWEB#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.2",
+    "nodemon": "^1.18.9"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0"
+  }
+}
