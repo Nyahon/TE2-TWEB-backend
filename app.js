@@ -10,6 +10,8 @@ dotenv.config()
 const conf = require('./conf').default
 // Get database models
 const User = require('./models/user')
+const Movie = require('./models/movie')
+const Watchlist = require('./models/watchlist')
 
 // Useful variables
 const app = express()
@@ -54,17 +56,48 @@ const connectWithRetry = () => {
 
 app.set('secret', conf.secret)
 
+
 // Connect to MongoDB
 connectWithRetry()
+
+/*************TE2 MAMENE ************************/
 
 /********************************************
  * Unprotected routes
  *******************************************/
 
+/*lol, ça marche */
+app.post('/movies', (req, res, next) => {
+
+	Movie.find({ title: req.body.title })
+		.then(result => {
+			if (result.length === 0) {
+				const error = new Error('There is no such movie here. Did you mean "H2G2 The Hitchhiker\'s Guide to the Galaxy" ?')
+				error.status = 404
+				next(error)
+			} else {
+				res.send(result)
+			}
+		})
+})
+
+/* j'espère que c'est ça que tu me demandais, et étrangement j'espère aussi que c'est pas _juste_ ça. 
+	Le développeur de Schrodinger, à la fois gavé et emerveillé. */
+
+/*Ps: têtre j'ai le temps et la motivation de paginer, m'en voulez pas si je m'en vais.
+	https://www.youtube.com/watch?v=6RAJdafk1Y8 */
+
+app.get('/movies', (req, res, next) => {
+	Movie.find()
+		.then(result => res.send(result))
+})
+
+
+
 /**
-* Sign a user up
+* Sign a user up biaaaaaaaaaaaaaaaaaaaaaaaaaaaatch.
 */
-app.post('/signup', (req, res, next) => {
+app.post('/auth/register', (req, res, next) => {
 	User.find({ email: req.body.email })
 		.then(result => {
 			if (result.length === 0) {
@@ -74,10 +107,11 @@ app.post('/signup', (req, res, next) => {
 					password: req.body.password
 				})
 					.then((user) => {
-						res.send(user)
+						res.sendStatus(201)
+						//res.send(user)
 					})
 			} else {
-				const error = new Error('Email already exists')
+				const error = new Error('User already exists, unlike your brain')
 				error.status = 400
 				next(error)
 			}
@@ -87,12 +121,19 @@ app.post('/signup', (req, res, next) => {
 /**
 * Sign a user in
 */
-app.post('/signin', (req, res, next) => {
+app.post('/auth/login', (req, res, next) => {
 	const email = req.body.email
 	const password = req.body.password
 	User.findOne({ email })
 		.then((user) => {
-			if (password === user.password) {
+			
+			if (user === null){
+				const error = new Error('Do not know that name, ma biche')
+				error.status = 404
+				next(error)		
+			}
+
+			else if( password === user.password ) {
 				const payload = { email }
 				const token = jwt.sign(payload, app.get('secret'), {
 					expiresIn: 60 * 60 * 24 // expires in 24 hours
@@ -108,7 +149,9 @@ app.post('/signin', (req, res, next) => {
 					}
 				})
 			} else {
-				throw new Error('Wrong password')
+				const error = new Error('UNAUTHORIZED, ma biche')
+				error.status = 401
+				next(error)			
 			}
 		})
 		.catch(next)
@@ -119,8 +162,13 @@ app.get('/users', (req, res, next) => {
 		.then(result => res.send(result))
 })
 
+
+
 /**
  * Asks for a json web token for all subsequent routes
+ * PROTECTION FOR THE WEAK
+ * APPRECIATION FOR THE STRONG
+ * JUSTICE FOR ALL
  */
 app.use((req, res, next) => {
 	const token = req.body.token || req.query.token || req.headers['x-access-token']
@@ -144,9 +192,44 @@ app.use((req, res, next) => {
 })
 
 /********************************************
- * Protected routes
+ * Protected prouts.
  *******************************************/
+/*lol, ça marche presque */
+app.post('/watchlists', (req, res, next) => {
+	Watchlist.find({ id_user: req.body.id_user })
+		.then(result => {
 
+			if (result.length === 0) {
+				const error = new Error('This user as no watchlist here, try another castle')
+				error.status = 404
+				next(error)
+			} else {
+				let wl = ""
+				 const {user, list} = result
+				 list.forEach(movie => {
+					 Movie.find({title : movie})
+					 .then(result => {
+						 if(result.length !== 0){
+							 //DIRTY COMME UN POMME D'API PERIME
+							wl.concat(result);
+						 }
+					 })
+				 });
+				res.send(wl)
+			}
+		})
+})
+/*lol, ça marche */
+app.post('/watchlist/', (req, res, next) => {
+
+	Watchlist.find({ id_user: req.body.id_user })
+		.then(result => {
+	
+			
+			res.send(result)
+			
+		})
+})
 
 // Forward 404 to error handler
 app.use((req, res, next) => {
