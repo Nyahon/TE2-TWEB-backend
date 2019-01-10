@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 
 var watchlistSchema = new mongoose.Schema({
      id_user : String, 
-     list_movies: [{String}]
+     list_movies: [{ type: String}]
 });
 
 module.exports = mongoose.model('watchlists', watchlistSchema);
