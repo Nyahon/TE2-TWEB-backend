@@ -37,7 +37,6 @@ const mongoOpt = {
 }
 
 const mongoUrl = process.env.NODE_ENV === 'production' ? encodeURI(process.env.MONGODB_ENDPOINT_URL) : conf.db.url
-console.log(mongoUrl)
 
 // MangoDB connection with retry
 const connectWithRetry = () => {
