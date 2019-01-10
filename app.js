@@ -115,6 +115,7 @@ app.post('/signin', (req, res, next) => {
 })
 
 app.get('/users', (req, res, next) => {
+	console.log('hello!')
 	res.send('hello!')
 })
 
