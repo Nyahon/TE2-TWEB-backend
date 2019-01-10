@@ -4,6 +4,8 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const conf = require('./conf').default
 // Get database models
@@ -21,8 +23,6 @@ app.use(cors(corsOptions))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
-console.log(process.env.NODE_ENV)
 
 const mongoOpt = {
 	useNewUrlParser: true,
