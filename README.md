@@ -11,4 +11,8 @@
 		1 1/4 cups milk
 		1 egg
 		3 tablespoons butter, melted
-	C'est pour une personne qui mange sainement. Moi quand j'en fais pour moi, je multiplie tout par pi^e.
+	C'est pour une personne qui mange sainement. Moi quand j'en fais pour moi, je multiplie tout par pi^e. Pie. héhé. 
+
+6. BEHOLD: LA PREUVE DE MON TALENT DE RECOPIE DE DOCUMENTATION. 
+![proof](import.png)
+
