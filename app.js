@@ -219,16 +219,12 @@ app.post('/watchlists', (req, res, next) => {
 			}
 		})
 })
-/*lol, ça marche */
 app.post('/watchlist/', (req, res, next) => {
 
-	Watchlist.find({ id_user: req.body.id_user })
-		.then(result => {
-	
-			
-			res.send(result)
-			
-		})
+	/*Bon c'est pas loin mais c'est pas ça */
+	Watchlist.update({ id_user: req.user.id_user }, { name: 'jason bourne' }, options, callback)
+
+
 })
 
 // Forward 404 to error handler
